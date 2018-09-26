@@ -27,10 +27,9 @@ namespace ClientUI
                             OrderId = Guid.NewGuid().ToString()
                         };
 
-                        // Send the command to the local endpoint
+                        // Send the command to the Sales End point
                         log.Info($"Sending PlaceOrder command, OrderId = {command.OrderId}");
-                        await endpointInstance.SendLocal(command)
-                            .ConfigureAwait(false);
+                        await endpointInstance.Send(command).ConfigureAwait(false);
 
                         break;
 
@@ -51,6 +50,9 @@ namespace ClientUI
             var endpointConfiguration = new EndpointConfiguration("ClientUI");
             var transport = endpointConfiguration.UseTransport<LearningTransport>();
             var endpointInstance = await Endpoint.Start(endpointConfiguration).ConfigureAwait(false);
+            var routing = transport.Routing();
+
+            routing.RouteToEndpoint(typeof(PlaceOrder), "Sales");
 
             await RunLoop(endpointInstance).ConfigureAwait(false);
 

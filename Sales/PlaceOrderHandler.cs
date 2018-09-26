@@ -5,7 +5,7 @@ using NServiceBus.Logging;
 using System.Threading.Tasks;
 using Messages;
 
-namespace ClientUI
+namespace Sales
 {
     public class PlaceOrderHandler : IHandleMessages<PlaceOrder>
     {
